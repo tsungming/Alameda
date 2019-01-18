@@ -6,7 +6,8 @@ node('go11') {
     sh """
       pwd 
       ls -la ${env.WORKSPACE}
-      echo ${env.BRANCH_NAME}
+      echo $BRANCH_NAME
+      echo $CHANGE_ID
     """
     if (env.CHANGE_ID) {
       pullRequest.addLabel('Build Failed')
