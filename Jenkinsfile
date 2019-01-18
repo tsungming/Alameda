@@ -1,6 +1,6 @@
 node('go11') {
   stage('checkout') {
-        git branch: 'master', url: "https://github.com/containers-ai/alameda.git"
+        git url: "https://github.com/tsungming/alameda.git", branch: 'master'
   }
   stage("Build Operator") {
     sh """
