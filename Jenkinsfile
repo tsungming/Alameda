@@ -9,6 +9,6 @@ node('go11') {
       ls -la ${env.WORKSPACE}      
       env
     """
-    gitHubPRStatus githubPRMessage('${GITHUB_PR_COND_REF} run started')
+    githubPRAddLabels labelProperty: labels('test')
   }
 }
