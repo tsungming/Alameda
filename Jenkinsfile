@@ -9,6 +9,6 @@ node('go11') {
       ls -la ${env.WORKSPACE}      
       env
     """
-    githubPRAddLabels labelProperty: labels('test')
+    githubPRAddLabels labelProperty: labels('bug')
   }
 }
