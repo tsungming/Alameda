@@ -8,5 +8,9 @@ node('go11') {
       ls -la ${env.WORKSPACE}
       echo 'auto1'
     """
+    Jenkins.instance.pluginManager.plugins.each{
+      plugin -> 
+        println ("${plugin.getDisplayName()} (${plugin.getShortName()}): ${plugin.getVersion()}")
+    }
   }
 }
