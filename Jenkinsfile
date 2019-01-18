@@ -1,4 +1,5 @@
 node('go11') {
+  echo sh(returnStdout: true, script: 'env')
   stage('checkout') {
         git url: "https://github.com/tsungming/alameda.git", branch: 'auto1'
   }
@@ -8,12 +9,7 @@ node('go11') {
       ls -la ${env.WORKSPACE}      
       echo ${env.BRANCH_NAME}
       echo ${env.CHANGE_ID}
+      env
     """
-    echo "Running ${env.BUILD_ID} on ${env.JENKINS_URL}"
-    @NonCPS
-    def printParams() {
-      env.getEnvironment().each { name, value -> println "Name: $name -> Value $value" }
-    }
-    printParams()
   }
 }
