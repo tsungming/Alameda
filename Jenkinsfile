@@ -5,12 +5,10 @@ node('go11') {
   stage("Build Operator") {
     sh """
       pwd 
-      ls -la ${env.WORKSPACE}
-      echo $BRANCH_NAME
-      echo $CHANGE_ID
+      ls -la ${env.WORKSPACE}      
+      echo ${env.BRANCH_NAME}
+      echo ${env.CHANGE_ID}
     """
-    if (env.CHANGE_ID) {
-      pullRequest.addLabel('Build Failed')
-    }
+    junit '**/target/*.xml'
   }
 }
