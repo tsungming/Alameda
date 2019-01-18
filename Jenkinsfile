@@ -11,6 +11,6 @@ node('go11') {
       echo ${env.CHANGE_ID}
       env
     """
-    gitHubPRStatus githubPRMessage('${GITHUB_PR_COND_REF} run started')
+    githubPRAddLabels labelProperty: labels('GGG'), statusVerifier: allowRunOnStatus('FAILURE')
   }
 }
