@@ -9,6 +9,6 @@ node('go11') {
       echo ${env.BRANCH_NAME}
       echo ${env.CHANGE_ID}
     """
-    junit '**/target/*.xml'
+    echo "Running ${env.BUILD_ID} on ${env.JENKINS_URL}"
   }
 }
