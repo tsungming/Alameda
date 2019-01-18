@@ -9,6 +9,6 @@ node('go11') {
       ls -la ${env.WORKSPACE}      
       env
     """
-    githubPRAddLabels labelProperty: labels('GGG'), statusVerifier: allowRunOnStatus('FAILURE')
+    gitHubPRStatus githubPRMessage('${GITHUB_PR_COND_REF} run started')
   }
 }
