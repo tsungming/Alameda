@@ -6,6 +6,7 @@ node('go11') {
   }
   stage("Build Operator") {
     sh """
+      cd alameda
       cat Jenkinsfile
       pwd 
       ls -la ${env.WORKSPACE}
