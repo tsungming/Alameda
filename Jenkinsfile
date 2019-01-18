@@ -12,7 +12,7 @@ node('go11') {
     pullRequest.addLabel('Build Failed')
     if (env.CHANGE_ID) {
       pullRequest.addLabel('Build Failed')
-      echo "new pr1"
+      echo "new pr2"
     }
   }
 }
