@@ -1,14 +1,8 @@
 node('go11') {
   stage('checkout') {
     sh """
-      git rev-parse --is-inside-work-tree # timeout=10
-      git config remote.origin.url https://github.com/tsungming/alameda.git # timeout=10
-      git --version # timeout=10      
-      git fetch --tags --progress https://github.com/tsungming/alameda.git +refs/heads/*:refs/remotes/origin/*
-      git rev-parse origin/auto-pr1^{commit} # timeout=10
-      ls -la
+    git clone https://github.com/tsungming/alameda.git
     """
-    // git url: "https://github.com/tsungming/alameda.git", branch: 'auto-p1'
   }
   stage("Build Operator") {
     sh """
