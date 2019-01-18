@@ -7,8 +7,6 @@ node('go11') {
     sh """
       pwd 
       ls -la ${env.WORKSPACE}      
-      echo ${env.BRANCH_NAME}
-      echo ${env.CHANGE_ID}
       env
     """
     githubPRAddLabels labelProperty: labels('GGG'), statusVerifier: allowRunOnStatus('FAILURE')
