@@ -6,11 +6,10 @@ node('go11') {
     sh """
       pwd 
       ls -la ${env.WORKSPACE}
-      echo 'auto1'
+      echo ${env.BRANCH_NAME}
     """
-    Jenkins.instance.pluginManager.plugins.each{
-      plugin -> 
-        println ("${plugin.getDisplayName()} (${plugin.getShortName()}): ${plugin.getVersion()}")
+    if (env.CHANGE_ID) {
+      pullRequest.addLabel('Build Failed')
     }
   }
 }
