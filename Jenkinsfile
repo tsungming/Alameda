@@ -1,7 +1,8 @@
 node('go11') {
   stage('checkout') {
     sh """
-      ls -la /var/lib/jenkins/jobs/tutorial-cicd/jobs/tutorial-cicd-alameda
+      git fetch --tags --progress https://github.com/tsungming/alameda.git +refs/heads/*:refs/remotes/origin/*
+      ls -la
     """
     // git url: "https://github.com/tsungming/alameda.git", branch: 'auto-p1'
   }
