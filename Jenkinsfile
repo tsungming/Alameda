@@ -8,5 +8,9 @@ node('go11') {
       ls -la ${env.WORKSPACE}
       echo "new branch"
     """
+    if (env.CHANGE_ID) {
+      pullRequest.addLabel('Build Failed')
+      echo "new pr"
+    }
   }
 }
