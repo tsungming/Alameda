@@ -6,6 +6,7 @@ node('go11') {
     sh """
       pwd 
       ls -la ${env.WORKSPACE}
+      echo "new branch"
     """
   }
 }
