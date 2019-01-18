@@ -10,5 +10,10 @@ node('go11') {
       echo ${env.CHANGE_ID}
     """
     echo "Running ${env.BUILD_ID} on ${env.JENKINS_URL}"
+    
+    def printParams() {
+      env.getEnvironment().each { name, value -> println "Name: $name -> Value $value" }
+    }
+    printParams()
   }
 }
