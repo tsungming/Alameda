@@ -36,6 +36,7 @@ pipeline {
                   def commit_id = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
                         echo "${commit_id}"
                 }
+                githubPRAddLabels labelProperty: labels('build')
               }
             }
           }
