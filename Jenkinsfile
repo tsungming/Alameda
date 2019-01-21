@@ -49,7 +49,7 @@ pipeline {
       }
     }
     stage("Build Operator") {
-      steps {        
+      steps {
         sh '''
           cd /go/src/github.com/containers-ai/alameda/operator
           make manager
@@ -78,7 +78,7 @@ pipeline {
         }
       }
     }
-    stage("Build Operator") {
+    stage("Build Datahub") {
       steps {
         sh '''
           cd /go/src/github.com/containers-ai/alameda/datahub
@@ -87,7 +87,7 @@ pipeline {
       }
     }
     stage("Test Operator") {
-      steps {        
+      steps {
         sh '''
           cd /go/src/github.com/containers-ai/alameda/operator
           make test
@@ -95,21 +95,15 @@ pipeline {
       }
     }
     stage("Test Datahub") {
-      steps {        
+      steps {
         sh '''
           cd /go/src/github.com/containers-ai/alameda/datahub
-          make test          
+          make test
         '''
       }
     }
   }
   post {
-    always {
-      step([
-        $class: 'GitHubCommitStatusSetter',
-        contextSource: [$class: 'ManuallyEnteredCommitContextSource', context: 'jenkins-ci']
-      ])
-    }
     failure {
       step([
         $class: 'GitHubCommitStatusSetter',
