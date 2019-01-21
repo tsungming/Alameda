@@ -16,7 +16,8 @@ pipeline {
           openshift.withCluster() {
             openshift.withProject() {
               echo "Using project: ${openshift.project()}"
-              echo "Using project: ${env}"        
+              echo "Using project: ${env.GIT_COMMIT}"
+              echo "Using project: ${env.GIT_BRANCH}"
             }
           }
         }
@@ -36,11 +37,15 @@ pipeline {
                   def commit_id = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
                         echo "${commit_id}"
                 }
-                githubPRAddLabels labelProperty: labels('bug')
               }
             }
           }
         }
+      }
+    }
+    stage('test github') {
+      steps {
+
       }
     }
   }
