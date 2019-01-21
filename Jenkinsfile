@@ -43,10 +43,5 @@ pipeline {
         }
       }
     }
-    stage('test github') {
-      steps {
-
-      }
-    }
   }
 }
