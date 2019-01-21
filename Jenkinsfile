@@ -16,7 +16,7 @@ pipeline {
           openshift.withCluster() {
             openshift.withProject() {
               echo "Using project: ${openshift.project()}"
-              env
+              echo "Using project: ${env}"        
             }
           }
         }
