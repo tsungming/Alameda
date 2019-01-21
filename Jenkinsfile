@@ -43,5 +43,16 @@ pipeline {
         }
       }
     }
+    stage('build') {
+      steps {
+        echo "Perform Build"
+        statusVerifier: allowRunOnStatus('SUCCESS')
+      }
+      post {
+        always {
+          githubPRStatusPublisher buildMessage: message(failureMsg: githubPRMessage('Can\'t set status; build failed.'), successMsg: githubPRMessage('Can\'t set status; build succeeded.')), errorHandler: statusOnPublisherError('UNSTABLE'), statusMsg: githubPRMessage('${GITHUB_PR_COND_REF} run ended'), statusVerifier: allowRunOnStatus('SUCCESS'), unstableAs: 'FAILURE'
+                }
+      }
+    }
   }
 }
