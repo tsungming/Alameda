@@ -37,16 +37,92 @@ pipeline {
                   def commit_id = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
                         echo "${commit_id}"
                 }
+                sh '''
+                  go env
+                  mkdir -p /go/src/github.com/containers-ai/alameda
+                  cp -R . /go/src/github.com/containers-ai/alameda
+                '''
               }
             }
           }
         }
       }
     }
-    stage('build') {
+    stage("Build Operator") {
+      steps {        
+        sh '''
+          cd /go/src/github.com/containers-ai/alameda/operator
+          make manager
+        '''
+      }
+      post {
+        always {
+          step([
+            $class: 'GitHubCommitStatusSetter',
+            contextSource: [$class: 'ManuallyEnteredCommitContextSource', context: 'jenkins-build-operator']
+          ])
+        }
+        failure {
+          step([
+            $class: 'GitHubCommitStatusSetter',
+            contextSource: [$class: 'ManuallyEnteredCommitContextSource', context: 'jenkins-build-operator'],
+            statusResultSource: [ $class: "ConditionalStatusResultSource", results: [[$class: "AnyBuildResult", message: "message", state: "FAILURE"]]]
+          ])
+        }
+        success {
+          step([
+            $class: 'GitHubCommitStatusSetter',
+            contextSource: [$class: 'ManuallyEnteredCommitContextSource', context: 'jenkins-build-operator'],
+            statusResultSource: [ $class: "ConditionalStatusResultSource", results: [[$class: "AnyBuildResult", message: "message", state: "SUCCESS"]]]
+          ])
+        }
+      }
+    }
+    stage("Build Operator") {
       steps {
-        step([$class: 'GitHubCommitStatusSetter', contextSource: [$class: 'ManuallyEnteredCommitContextSource', context: 'jenkins-test']])
-      }      
+        sh '''
+          cd /go/src/github.com/containers-ai/alameda/datahub
+          make datahub
+        '''
+      }
+    }
+    stage("Test Operator") {
+      steps {        
+        sh '''
+          cd /go/src/github.com/containers-ai/alameda/operator
+          make test
+        '''
+      }
+    }
+    stage("Test Datahub") {
+      steps {        
+        sh '''
+          cd /go/src/github.com/containers-ai/alameda/datahub
+          make test          
+        '''
+      }
+    }
+  }
+  post {
+    always {
+      step([
+        $class: 'GitHubCommitStatusSetter',
+        contextSource: [$class: 'ManuallyEnteredCommitContextSource', context: 'jenkins-ci']
+      ])
+    }
+    failure {
+      step([
+        $class: 'GitHubCommitStatusSetter',
+        contextSource: [$class: 'ManuallyEnteredCommitContextSource', context: 'jenkins-ci'],
+        statusResultSource: [ $class: "ConditionalStatusResultSource", results: [[$class: "AnyBuildResult", message: "message", state: "FAILURE"]]]
+      ])
+    }
+    success {
+      step([
+        $class: 'GitHubCommitStatusSetter',
+        contextSource: [$class: 'ManuallyEnteredCommitContextSource', context: 'jenkins-ci'],
+        statusResultSource: [ $class: "ConditionalStatusResultSource", results: [[$class: "AnyBuildResult", message: "message", state: "SUCCESS"]]]
+      ])
     }
   }
 }
